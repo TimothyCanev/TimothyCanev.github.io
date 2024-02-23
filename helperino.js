@@ -1,1 +1,2 @@
-document.write("This is JavaScript code running in the browser.");
+const element = document.getElementById('centeredElement');
+element.style.textAlign = 'center';
