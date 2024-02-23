@@ -1,3 +1,2 @@
-const element = document.getElementById('topText');
+const element = document.getElementById('centeredElement');
 element.style.textAlign = 'center';
-element.style.fontWeight = 300;
