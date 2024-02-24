@@ -1,6 +1,6 @@
 h1{
     text-align: left;
-    font-size: 600px;
+    font-size: 200px;
     padding-left: 100px;
     padding-top: 100px;
     font-family: "Century Gothic", sans-serif;
@@ -8,7 +8,8 @@ h1{
 p{
     text-align: center;
     font-family: "Century Gothic", sans-serif;
+    color: rgb(187, 179, 179);
 }
 body{
-    background-color: rgb(54, 54, 51);
+    background-color: rgb(54, 51, 51);
 }
