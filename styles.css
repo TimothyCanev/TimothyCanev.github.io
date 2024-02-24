@@ -5,16 +5,18 @@ h1{
     padding-top: 100px;
     font-family: "Century Gothic", sans-serif;
 }
+
 p{
     text-align: center;
     font-family: "Century Gothic", sans-serif;
     color: rgb(187, 179, 179);
 }
+
 body{
     background-color: rgb(54, 51, 51);
 }
-hr{
-    display: block;
-    height: 20px;
-    color: black;
+
+#topLine{
+    background-color: black;
+    padding: 10px;
 }
