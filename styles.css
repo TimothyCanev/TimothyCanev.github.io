@@ -1,19 +1,8 @@
-@font-face {
-    font-family: 'moonFont';
-    src: url('C:\Users\timus\OneDrive\Desktop\Website\moonfont') format('otf'),
-         url('C:\Users\timus\OneDrive\Desktop\Website\moonfont') format('otf');
-}
-
-.custom-font{
-    font-family: 'moonFont', sans-serif;
-}
-
-
 h1{
     text-align: left;
     padding-left: 100px;
     padding-top: 100px;
-    font-family: moon;
+    font-family: "Century Gothic", sans-serif;
 }
 p{
     text-align: center;
