@@ -1,19 +1,27 @@
 h1{
     text-align: left;
     font-size: 75px;
-    padding-left: 100px;
+    padding-left: 100px;    
     padding-top: 100px;
     font-family: "Century Gothic", sans-serif; 
 }
 
+h2{
+    text-align: right;
+    font-size: 75px;
+    padding-right: 100px;
+    font-family: "Century Gothic", sans-serif;
+
+}
+
 p{
-    text-align: center;
     font-family: "Century Gothic", sans-serif;
     color: rgb(187, 179, 179);
 }
 
 body{
     background-color: rgb(54, 51, 51);
+    margin: 0;
 }
 
 #topLine{
@@ -27,10 +35,20 @@ body{
     border-radius: 0px 0px 35px 35px;
 }
 
-.hover-over:hover{
-    font-weight: bold;
+.textUnderName{
+    font-size: 15px;
+    padding-left: 120px;
+    padding-bottom: 50px    ;
+    font-family: "Century Gothic", sans-serif;
+    max-width: 500px;
+    text-align: left;
+    
 }
 
-body, html{
-    margin: 0;
+.textRightSide{
+    text-align: left;
+    font-size: 75px;
+    padding-left: 100px;    
+    padding-top: 100px;
+    font-family: "Century Gothic", sans-serif; 
 }
