@@ -29,10 +29,14 @@ body{
     height: 50px;
     width: 100%;
     text-align: center;
-    position: absolute;
+    position: sticky;
     top: 0;
-    left: 25;
     border-radius: 0px 0px 35px 35px;
+    transition: top 0.3s ease-in-out;
+}
+
+#topLine p{
+    margin: 0;
 }
 
 .textUnderName{
@@ -46,9 +50,9 @@ body{
 }
 
 .textRightSide{
-    text-align: left;
-    font-size: 75px;
-    padding-left: 100px;    
-    padding-top: 100px;
+    text-align: right;
+    font-size: 15px;
+    padding-left: 790px;    
+    max-width: 500px;
     font-family: "Century Gothic", sans-serif; 
 }
