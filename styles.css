@@ -8,11 +8,23 @@
     src: url('Moon\ Bold.otf');
   }
 
+html{
+    scroll-behavior: smooth;
+}
+
 h1{
     text-align: left;
-    font-size: 75px;
+    font-size: 35px;
     padding-left: 100px;    
     padding-top: 100px;
+    max-width: 500px;
+}
+
+h1 lightSpan{
+    font-family: 'MoonFontLight', sans-serif;
+}
+
+h1 boldSpan{
     font-family: 'MoonFontBold', sans-serif;
 }
 
@@ -22,6 +34,13 @@ h2{
     padding-right: 100px;
     font-family: 'MoonFontBold', sans-serif;
 
+}
+
+h3{
+    text-align: left;
+    font-size: 50px;
+    padding-left: 100px;
+    font-family: 'MoonFontBold', sans-serif;
 }
 
 p{
@@ -44,9 +63,10 @@ body{
 }
 
 #LogoLine img{
-    padding-left: 100px;
+    padding-right: 1000px;
     width: 65px !important;
     height: 65px !important;
+    padding-left: 100px;
 
 }
 
@@ -55,23 +75,20 @@ body{
     padding-right: 100px;
     display: flex;
     justify-content: space-between;
-    align-items: center ;
+    align-items: right;
     padding-top: 75px;
+    display: flex;
 }
 
 #LogoLineText:hover{
     font-weight: bold;
-    text-decoration: underline;
-    text-align: right;
-
 }
 
 
 .textUnderName{
     font-size: 15px;
     padding-left: 120px;
-    padding-bottom: 50px    ;
-    font-family: "Century Gothic", sans-serif;
+    padding-bottom: 50px;
     max-width: 500px;
     text-align: left;
     
@@ -82,5 +99,4 @@ body{
     font-size: 15px;
     padding-left: 790px;    
     max-width: 500px;
-    font-family: "Century Gothic", sans-serif; 
 }
