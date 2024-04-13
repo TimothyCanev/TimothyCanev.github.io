@@ -26,6 +26,8 @@ h1 lightSpan{
 
 h1 boldSpan{
     font-family: 'MoonFontBold', sans-serif;
+
+
 }
 
 h2{
@@ -45,7 +47,7 @@ h3{
 
 p{
     font-family: 'MoonFontLight', sans-serif;
-    color: rgb(187, 179, 179);
+    color: rgb(51, 2, 2);
 }
 
 body{
@@ -87,10 +89,10 @@ body{
 
 .textUnderName{
     font-size: 15px;
-    padding-left: 120px;
-    padding-bottom: 50px;
+    padding-left: 100px;
     max-width: 500px;
     text-align: left;
+    line-height: 1.7;
     
 }
 
