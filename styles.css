@@ -26,15 +26,34 @@ h1 lightSpan{
 
 h1 boldSpan{
     font-family: 'MoonFontBold', sans-serif;
-
-
 }
 
 h2{
+    padding-top: 35px;
     text-align: right;
-    font-size: 75px;
+    font-size: 55px;
     padding-right: 100px;
     font-family: 'MoonFontBold', sans-serif;
+    color: seashell;
+}
+
+h2 lightSpan{
+    font-family: 'MoonFontLight', sans-serif;
+}
+
+h2 boldSpan{
+    font-family: 'MoonFontBold', sans-serif;
+}
+
+#esailingLogo{
+    padding-left: 40px;
+}
+
+#esailingLogo img {
+    width: 70px;
+    height: 70px;
+    margin: 0px;
+    margin-inline-start: 200px;
 
 }
 
@@ -62,6 +81,14 @@ body{
     width: 100%;
     top: 0;
     border-radius: 0px 0px 70px 70px;
+}
+
+#experienceBackground {
+    width: 1300px;
+    height: 650px;
+    background-color: rgb(94, 75, 165);
+    margin-left: 100px;
+    border-radius: 30px 30px 30px 30px;
 }
 
 #LogoLine img{
