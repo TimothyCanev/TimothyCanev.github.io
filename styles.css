@@ -45,17 +45,42 @@ h2 boldSpan{
     font-family: 'MoonFontBold', sans-serif;
 }
 
-#esailingLogo{
-    padding-left: 40px;
+#Logos{
+    display: flex;
 }
 
-#esailingLogo img {
+#Logos img {
     width: 70px;
     height: 70px;
-    margin: 0px;
-    margin-inline-start: 200px;
-
+    margin-inline-start: 260px;
 }
+
+#textUnderLogos1{
+    font-family: 'MoonFontLight', sans-serif;
+    margin-inline-start: 100px;
+    max-width: 300px;
+    padding-top:  40px;
+    color: seashell;
+}
+#textUnderLogos2{
+    font-family: 'MoonFontLight', sans-serif;
+    margin-inline-start: 100px;
+    max-width: 300px;
+    padding-top:  40px;
+    color: seashell;
+}
+#textUnderLogos3{
+    font-family: 'MoonFontLight', sans-serif;
+    margin-inline-start: 100px;
+    max-width: 300px;
+    padding-top:  40px;
+    color: seashell;
+}
+
+#experienceBackgroundText {
+    display: flex;
+    justify-content: space-between 300px; 
+  }
 
 h3{
     text-align: left;
@@ -128,4 +153,18 @@ body{
     font-size: 15px;
     padding-left: 790px;    
     max-width: 500px;
+}
+
+.projectsTextAbout{
+    padding-left: 150px;
+    max-width: 600px;
+}
+
+.projectsText lightSpan{
+    font-family: 'MoonFontLight', sans-serif;
+}
+
+.projectsText boldSpan{
+    font-family: 'MoonFontBold', sans-serif;
+    padding-left: 120px;
 }
