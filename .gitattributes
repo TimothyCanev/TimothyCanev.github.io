@@ -1,0 +1,7 @@
+# Never apply line-ending conversion to binary assets
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.woff2 binary
+*.otf   binary
