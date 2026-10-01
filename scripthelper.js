@@ -179,6 +179,189 @@
         }).observe(codeWindow);
       }
     }
+
+    // --- Window controls: red = terminal, yellow = minimise, green = full screen ---
+    var tablist = codeWindow.querySelector('.code-tabs');
+    var codeTitle = document.getElementById('codeTitle');
+    var terminal = document.getElementById('codeTerminal');
+    var termOut = document.getElementById('termOut');
+    var reopenBtn = document.getElementById('codeReopen');
+    var pill = document.getElementById('codePill');
+    var pillName = document.getElementById('codePillName');
+    var modal = document.getElementById('codeModal');
+    var closeBtn = codeWindow.querySelector('[data-action="close"]');
+    var minBtn = codeWindow.querySelector('[data-action="minimize"]');
+    var maxBtn = codeWindow.querySelector('[data-action="maximize"]');
+    var isClosed = false;
+    var isMax = false;
+    var placeholder = null;
+    var typing = null;
+
+    var TERMINAL_LINES = [
+      ['prompt', '$ exit'],
+      ['', 'logout'],
+      ['dim', 'Saving session...'],
+      ['dim', '...copying shared history...'],
+      ['dim', '...saving history...truncating history files...'],
+      ['dim', '...completed.'],
+      ['', ''],
+      ['', '[Process completed]']
+    ];
+
+    var activeTab = function () {
+      return tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0];
+    };
+    var activePanel = function () {
+      return document.getElementById(activeTab().getAttribute('aria-controls'));
+    };
+
+    var typeTerminal = function () {
+      clearTimeout(typing);
+      termOut.textContent = '';
+      var line = 0;
+      var ch = 0;
+      var span = null;
+      var step = function () {
+        if (line >= TERMINAL_LINES.length) {
+          var caret = el('span', 'caret');
+          caret.setAttribute('aria-hidden', 'true');
+          termOut.appendChild(caret);
+          return;
+        }
+        var cls = TERMINAL_LINES[line][0];
+        var text = TERMINAL_LINES[line][1];
+        if (!span) {
+          span = el('span', cls ? 'term-' + cls : null);
+          termOut.appendChild(span);
+        }
+        if (reduceMotion) {
+          span.textContent = text;
+        } else if (ch < text.length) {
+          span.textContent += text.charAt(ch++);
+          typing = setTimeout(step, line === 0 ? 70 : 12);
+          return;
+        }
+        termOut.appendChild(document.createTextNode('\n'));
+        line++;
+        ch = 0;
+        span = null;
+        if (reduceMotion) step();
+        else typing = setTimeout(step, line === 1 ? 380 : 150);
+      };
+      step();
+    };
+
+    var closeEditor = function () {
+      if (isClosed) return;
+      stopRotation();
+      isClosed = true;
+      tablist.hidden = true;
+      codeTitle.hidden = false;
+      activePanel().hidden = true;
+      terminal.hidden = false;
+      closeBtn.setAttribute('aria-disabled', 'true');
+      typeTerminal();
+      reopenBtn.focus({ preventScroll: true });
+    };
+
+    var reopenEditor = function () {
+      clearTimeout(typing);
+      isClosed = false;
+      terminal.hidden = true;
+      codeTitle.hidden = true;
+      tablist.hidden = false;
+      activePanel().hidden = false;
+      closeBtn.removeAttribute('aria-disabled');
+      activeTab().focus({ preventScroll: true });
+    };
+
+    var enterFullScreen = function () {
+      stopRotation();
+      placeholder = el('div', 'code-placeholder', 'Open in full screen');
+      placeholder.style.height = codeWindow.offsetHeight + 'px';
+      codeWindow.parentNode.insertBefore(placeholder, codeWindow);
+      modal.appendChild(codeWindow);
+      modal.hidden = false;
+      root.classList.add('modal-open');
+      isMax = true;
+      maxBtn.setAttribute('aria-label', 'Exit full screen');
+      maxBtn.focus({ preventScroll: true });
+    };
+
+    var exitFullScreen = function (restoreFocus) {
+      if (!isMax) return;
+      placeholder.parentNode.insertBefore(codeWindow, placeholder);
+      placeholder.parentNode.removeChild(placeholder);
+      placeholder = null;
+      modal.hidden = true;
+      root.classList.remove('modal-open');
+      isMax = false;
+      maxBtn.setAttribute('aria-label', 'Open editor full screen');
+      if (restoreFocus !== false) maxBtn.focus({ preventScroll: true });
+    };
+
+    var minimize = function () {
+      stopRotation();
+      exitFullScreen(false);
+      pillName.textContent = isClosed ? 'Terminal' : activeTab().textContent.trim();
+      codeWindow.classList.add('is-leaving');
+    };
+
+    // The exit animation finishes before the pill appears (instant with reduced motion).
+    codeWindow.addEventListener('animationend', function (e) {
+      if (e.target !== codeWindow || e.animationName !== 'win-out') return;
+      codeWindow.classList.remove('is-leaving');
+      codeWindow.hidden = true;
+      pill.hidden = false;
+      pill.focus({ preventScroll: true });
+    });
+
+    pill.addEventListener('click', function () {
+      pill.hidden = true;
+      codeWindow.hidden = false;
+      minBtn.focus({ preventScroll: true });
+    });
+
+    codeWindow.querySelector('.code-dots').addEventListener('click', function (e) {
+      var btn = e.target.closest('.win-btn');
+      if (!btn) return;
+      var action = btn.getAttribute('data-action');
+      if (action === 'close') closeEditor();
+      else if (action === 'minimize') minimize();
+      else if (action === 'maximize') {
+        if (isMax) exitFullScreen();
+        else enterFullScreen();
+      }
+    });
+
+    reopenBtn.addEventListener('click', reopenEditor);
+
+    // Leave full screen before following a "View project" link.
+    codeWindow.addEventListener('click', function (e) {
+      if (isMax && e.target.closest('a.code-status')) exitFullScreen(false);
+    });
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) exitFullScreen();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!isMax) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        exitFullScreen();
+      } else if (e.key === 'Tab') {
+        // keep keyboard focus inside the full-screen editor
+        var focusable = Array.prototype.filter.call(codeWindow.querySelectorAll('button, a[href]'), function (n) {
+          return n.tabIndex !== -1 && n.getClientRects().length > 0;
+        });
+        if (!focusable.length) return;
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
   }
 
 

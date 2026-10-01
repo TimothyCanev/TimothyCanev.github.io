@@ -59,8 +59,8 @@
   </script>
   <link rel="preload" href="fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261001b">
-  <script src="scripthelper.js?v=20261001b" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261001c">
+  <script src="scripthelper.js?v=20261001c" defer></script>
 </head>
 <body>
   <span class="scroll-sentinel" id="scrollSentinel" aria-hidden="true"></span>
@@ -174,16 +174,27 @@
                (see "CODE WINDOW" in scripthelper.js). Snippets are illustrative excerpts. -->
           <div class="code-card" id="codeWindow" role="group" aria-label="Code from my projects">
             <div class="code-bar">
-              <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <div class="code-dots" role="group" aria-label="Window controls">
+                <button class="win-btn win-close" type="button" data-action="close" aria-label="Close editor">
+                  <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.5 2.5l5 5M7.5 2.5l-5 5"/></svg>
+                </button>
+                <button class="win-btn win-min" type="button" data-action="minimize" aria-label="Minimise editor">
+                  <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2 5h6"/></svg>
+                </button>
+                <button class="win-btn win-max" type="button" data-action="maximize" aria-label="Open editor full screen">
+                  <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path class="fill" d="M2.2 7.8V4.4l3.4 3.4zM7.8 2.2v3.4L4.4 2.2z"/></svg>
+                </button>
+              </div>
+              <span class="code-title" id="codeTitle" hidden>zsh — timothy@portfolio</span>
               <div class="code-tabs" role="tablist" aria-label="Project files">
                 <button class="code-tab" type="button" role="tab" id="tab-fitform" aria-selected="true" aria-controls="panel-fitform">
-                  FitForm.dart<span class="tab-progress" aria-hidden="true"></span>
+                  FitForm<span class="tab-ext">.dart</span><span class="tab-progress" aria-hidden="true"></span>
                 </button>
                 <button class="code-tab" type="button" role="tab" id="tab-inzeratik" aria-selected="false" aria-controls="panel-inzeratik" tabindex="-1">
-                  listings.ts<span class="tab-progress" aria-hidden="true"></span>
+                  listings<span class="tab-ext">.ts</span><span class="tab-progress" aria-hidden="true"></span>
                 </button>
                 <button class="code-tab" type="button" role="tab" id="tab-esailing" aria-selected="false" aria-controls="panel-esailing" tabindex="-1">
-                  SailBoat.cs<span class="tab-progress" aria-hidden="true"></span>
+                  SailBoat<span class="tab-ext">.cs</span><span class="tab-progress" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
@@ -284,7 +295,25 @@
                 <span class="code-status-link">View project<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></span>
               </a>
             </div>
+
+            <!-- Shown when the red button "closes" the editor -->
+            <div class="code-panel code-terminal" id="codeTerminal" hidden>
+              <div class="code-body">
+                <pre class="code term-out" id="termOut"></pre>
+              </div>
+              <button class="code-status code-reopen" id="codeReopen" type="button">
+                <span class="code-status-name"><span class="code-status-dot" aria-hidden="true"></span><span class="code-status-text">Editor closed</span></span>
+                <span class="code-status-link">Reopen editor<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></span>
+              </button>
+            </div>
           </div>
+
+          <!-- Shown when the yellow button minimises the editor -->
+          <button class="code-pill" id="codePill" type="button" hidden>
+            <span class="code-pill-icon" aria-hidden="true">&lt;/&gt;</span>
+            <span class="code-pill-name" id="codePillName">FitForm.dart</span>
+            <span class="code-pill-hint">Restore</span>
+          </button>
           <dl class="stats">
             <div class="stat"><dt>Years teaching</dt><dd>3+</dd></div>
             <div class="stat"><dt>Projects shipped</dt><dd>6+</dd></div>
@@ -887,5 +916,7 @@
     </div>
   </footer>
 
+  <!-- Full-screen layer for the green button; the editor is moved in here while open -->
+  <div class="code-modal" id="codeModal" role="dialog" aria-modal="true" aria-label="Code editor, full screen" hidden></div>
 </body>
 </html>
