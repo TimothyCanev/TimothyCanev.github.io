@@ -1,731 +1,771 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Timothy Canev — Software Engineer</title>
   <meta name="description" content="Software Engineer specializing in Flutter, Firebase, Unity, and cross-platform development. Based in Copenhagen.">
+  <meta name="theme-color" content="#0C0C0C">
+  <meta name="color-scheme" content="dark light">
+  <script>
+    // Apply the saved theme before first paint (dark is the default).
+    (function () {
+      var root = document.documentElement;
+      root.classList.add('js');
+      try {
+        var saved = localStorage.getItem('tc-theme');
+        if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <div class="nav-inner">
-      <a href="#home" class="logo">TC<span class="logo-dot">.</span></a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <div class="nav-actions">
-        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
-          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <!-- ICON SPRITE -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></g></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></g></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88"/></g></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></g></symbol>
+    <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></g></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></g></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></g></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></g></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></g></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></g></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- HEADER / NAV -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="#home" class="logo" aria-label="Timothy Canev, back to top">TC<span class="logo-dot">.</span></a>
+      <nav class="nav" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Switch to light theme">
+          <svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg>
+          <svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg>
         </button>
-        <a href="CV.pdf" download class="cv-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <a href="CV.pdf" download class="btn btn-primary btn-sm cv-btn">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>
           CV
         </a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
     </div>
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#about" class="mobile-link">About</a>
-      <a href="#experience" class="mobile-link">Experience</a>
-      <a href="#projects" class="mobile-link">Projects</a>
-      <a href="#skills" class="mobile-link">Skills</a>
-      <a href="#contact" class="mobile-link">Contact</a>
-      <a href="CV.pdf" download class="mobile-link accent">Download CV</a>
-    </div>
-  </nav>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+      <ul>
+        <li><a href="#about" class="mobile-link">About</a></li>
+        <li><a href="#experience" class="mobile-link">Experience</a></li>
+        <li><a href="#projects" class="mobile-link">Projects</a></li>
+        <li><a href="#skills" class="mobile-link">Skills</a></li>
+        <li><a href="#contact" class="mobile-link">Contact</a></li>
+      </ul>
+      <a href="CV.pdf" download class="btn btn-primary btn-block">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>
+        Download CV
+      </a>
+    </nav>
+  </header>
 
-  <!-- HERO -->
-  <section id="home" class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <a href="#experience" class="now-badge fade-up">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span class="now-label">Now</span>
-          <span class="now-text">Student Frontend Developer @ Nordea · MSc CS @ DTU</span>
-        </a>
-        <p class="hero-eyebrow fade-up">Timothy Canev · Software Engineer · Copenhagen, Denmark</p>
-        <h1 class="hero-title fade-up delay-1">
-          I turn complex<br>problems into<br><span class="accent-text">shipped software.</span>
-        </h1>
-        <p class="hero-sub fade-up delay-2">
-          I'm a Student Frontend Developer at Nordea and an MSc student in Computer Science
-          and Engineering at DTU. I also lead Flutter/Firebase and Next.js/Supabase builds
-          at VH Software, and helped build a real-time multiplayer sailing simulator in Unity.
-        </p>
-        <div class="hero-cta fade-up delay-3">
-          <a href="#projects" class="btn-primary">View Projects</a>
-          <a href="#contact" class="btn-ghost">Get in touch</a>
-        </div>
-        <div class="hero-meta fade-up delay-4">
-          <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener" class="meta-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
+  <main id="main">
+
+    <!-- HERO -->
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <a href="#experience" class="now-badge enter">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span class="now-label">Now</span>
+            <span class="now-text">Student Frontend Developer @ Nordea · MSc CS @ DTU</span>
           </a>
-          <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener" class="meta-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            LinkedIn
-          </a>
-        </div>
-      </div>
-      <div class="hero-visual fade-up delay-2">
-        <div class="hero-card">
-          <div class="hc-header">
-            <span class="hc-dot red"></span>
-            <span class="hc-dot yellow"></span>
-            <span class="hc-dot green"></span>
-            <span class="hc-filename">FitForm.dart</span>
+          <p class="hero-name enter" style="--d: 1">Timothy Canev · Software Engineer · Copenhagen, Denmark</p>
+          <h1 class="hero-title enter" id="hero-title" style="--d: 2">
+            I turn complex<br> problems into<br> <span class="accent-text">shipped software.</span>
+          </h1>
+          <p class="hero-lead enter" style="--d: 3">
+            I'm a Student Frontend Developer at Nordea and an MSc student in Computer Science
+            and Engineering at DTU. I also lead Flutter/Firebase and Next.js/Supabase builds
+            at VH Software, and helped build a real-time multiplayer sailing simulator in Unity.
+          </p>
+          <div class="hero-actions enter" style="--d: 4">
+            <a href="#projects" class="btn btn-primary">
+              View Projects
+              <svg class="icon icon-shift" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>
+            </a>
+            <a href="#contact" class="btn btn-ghost">Get in touch</a>
           </div>
-          <pre class="hc-code"><code><span class="c-keyword">class</span> <span class="c-class">FitFormApp</span> <span class="c-keyword">extends</span> <span class="c-class">StatelessWidget</span> {
-  <span class="c-keyword">final</span> rewardSystem = <span class="c-class">TokenRewardSystem</span>(
-    healthConnect: <span class="c-class">HealthConnectAPI</span>(),
-    antiCheat: <span class="c-class">FirebaseCloudFunctions</span>(),
+          <ul class="hero-social enter" style="--d: 5">
+            <li>
+              <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>
+                GitHub<span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg>
+                LinkedIn<span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-visual enter" style="--d: 3">
+          <figure class="code-card">
+            <figcaption class="code-bar">
+              <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="code-file">FitForm.dart</span>
+              <span class="code-lang" aria-hidden="true">Dart</span>
+            </figcaption>
+            <div class="code-body">
+              <pre class="code-gutter" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12</pre>
+              <pre class="code"><code><span class="t-kw">class</span> <span class="t-type">FitFormApp</span> <span class="t-kw">extends</span> <span class="t-type">StatelessWidget</span> {
+  <span class="t-kw">final</span> rewardSystem = <span class="t-type">TokenRewardSystem</span>(
+    <span class="t-prop">healthConnect</span>: <span class="t-type">HealthConnectAPI</span>(),
+    <span class="t-prop">antiCheat</span>: <span class="t-type">FirebaseCloudFunctions</span>(),
   );
 
-  <span class="c-comment">// Cross-platform · iOS + Android</span>
-  <span class="c-keyword">void</span> <span class="c-fn">syncWorkout</span>(<span class="c-class">WorkoutSession</span> session) {
-    rewardSystem.<span class="c-fn">process</span>(session)
-      .<span class="c-fn">then</span>((tokens) =&gt; <span class="c-fn">awardUser</span>(tokens));
+  <span class="t-com">// Cross-platform · iOS + Android</span>
+  <span class="t-kw">void</span> <span class="t-fn">syncWorkout</span>(<span class="t-type">WorkoutSession</span> session) {
+    rewardSystem.<span class="t-fn">process</span>(session)
+      .<span class="t-fn">then</span>((tokens) =&gt; <span class="t-fn">awardUser</span>(tokens));
   }
-}</code></pre>
-        </div>
-        <div class="hero-stats">
-          <div class="stat-pill">
-            <span class="stat-num">3+</span>
-            <span class="stat-label">Years teaching</span>
-          </div>
-          <div class="stat-pill">
-            <span class="stat-num">6+</span>
-            <span class="stat-label">Projects shipped</span>
-          </div>
-          <div class="stat-pill">
-            <span class="stat-num">2</span>
-            <span class="stat-label">Teams led</span>
-          </div>
+}<span class="caret" aria-hidden="true"></span></code></pre>
+            </div>
+          </figure>
+          <dl class="stats">
+            <div class="stat"><dt>Years teaching</dt><dd>3+</dd></div>
+            <div class="stat"><dt>Projects shipped</dt><dd>6+</dd></div>
+            <div class="stat"><dt>Teams led</dt><dd>2</dd></div>
+          </dl>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">About</span>
-        <h2 class="section-title">Engineer, team lead,<br>MSc student.</h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-text reveal">
-          <p>
-            I'm a software engineer who completed a BSc in Software Engineering at the University of
-            Southern Denmark in Sønderborg, where I achieved a high academic standing with a 9 GPA.
-            Today I'm in Copenhagen, studying for an MSc in Computer Science and Engineering at the
-            Technical University of Denmark (DTU) while working part-time as a Student Frontend
-            Developer at Nordea.
-          </p>
-          <p>
-            Before DTU, I ran three roles in parallel: managing full-cycle app development at
-            VH Software, contributing to a competitive sailing simulator at Play eSailing, and teaching
-            OOP, AOP and Web Technologies as a student instructor at SDU, appointed for three
-            consecutive years. The teaching wrapped up in July 2026 and the eSailing work in
-            August 2026. The VH Software work continues.
-          </p>
-          <p>
-            I'm comfortable across the stack: Flutter on the client, Firebase on the backend, Unity for
-            simulation, Next.js and Supabase when the job calls for it, and now enterprise frontend
-            with TypeScript and Angular in a banking context. I like problems that sit at the
-            intersection of engineering precision and product thinking.
-          </p>
-          <div class="about-langs">
-            <span class="lang-item"><strong>English</strong> — Professional</span>
-            <span class="lang-item"><strong>Slovak</strong> — Native</span>
-            <span class="lang-item"><strong>Czech</strong> — Professional</span>
-            <span class="lang-item"><strong>German</strong> — Intermediate</span>
-            <span class="lang-item"><strong>Danish</strong> — Elementary</span>
-          </div>
-        </div>
-        <div class="about-cards reveal delay-1">
-          <div class="about-card">
-            <div class="ac-icon accent-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            </div>
-            <div>
-              <div class="ac-title">MSc Computer Science and Engineering <span class="current-badge">In progress</span></div>
-              <div class="ac-sub">DTU Copenhagen · Sep 2026 – Jun 2028</div>
-            </div>
-          </div>
-          <div class="about-card">
-            <div class="ac-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            </div>
-            <div>
-              <div class="ac-title">BSc Software Engineering</div>
-              <div class="ac-sub">SDU Sønderborg · 2023–2026</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- ABOUT -->
+    <section id="about" class="section" aria-labelledby="about-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker"><span class="kicker-num">01</span>About</p>
+          <h2 class="section-title" id="about-title">Engineer, team lead,<br> MSc student.</h2>
+        </header>
 
-      <!-- CERTIFICATIONS: rendered from the CERTIFICATIONS array in scripthelper.js -->
-      <div class="certifications reveal">
-        <h3 class="cert-heading">Certifications</h3>
-        <div class="cert-grid" id="certList"></div>
-        <noscript>
-          <p class="cert-noscript">See my certifications on <a href="https://www.credly.com/users/timothy-canev">Credly</a>.</p>
-        </noscript>
-        <a href="https://www.credly.com/users/timothy-canev" target="_blank" rel="noopener" class="cert-credly">View all badges on Credly ↗</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section id="experience" class="section section-alt">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Experience</span>
-        <h2 class="section-title">Where I've worked.</h2>
-      </div>
-      <div class="timeline">
-
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Sep 2026 — Present</div>
-            <div class="tl-company">Nordea</div>
-            <div class="tl-location">Copenhagen, DK · Part-time</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot active"></div>
-            <div class="tl-line"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">Student Frontend Developer</div>
-            <p class="tl-desc">
-              Frontend development within Team Phoenix, part of the Savings Insights ART in Nordea's
-              Savings &amp; Wealth unit. Working on digital wealth products alongside my MSc at DTU.
+        <div class="about-grid">
+          <div class="about-bio reveal">
+            <p class="lead">
+              I'm a software engineer who completed a BSc in Software Engineering at the University of
+              Southern Denmark in Sønderborg, where I achieved a high academic standing with a 9 GPA.
+              Today I'm in Copenhagen, studying for an MSc in Computer Science and Engineering at the
+              Technical University of Denmark (DTU) while working part-time as a Student Frontend
+              Developer at Nordea.
             </p>
-            <div class="tl-tags">
-              <span class="tl-tag">TypeScript</span>
-              <span class="tl-tag">Angular</span>
-              <span class="tl-tag">Frontend</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Dec 2025 — Present</div>
-            <div class="tl-company">VH Software</div>
-            <div class="tl-location">Bratislava, SK · Hybrid</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot active"></div>
-            <div class="tl-line"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">Software Project Manager</div>
-            <p class="tl-desc">
-              Managing end-to-end development for two simultaneous client projects. Leading a cross-functional
-              Flutter/Dart team building FitForm — a health rewards app with HealthKit/Health Connect integration
-              and Firebase anti-cheat Cloud Functions. Concurrently leading a Next.js/Supabase C2C marketplace
-              with geo-location filtering, media compression, Stripe, and PostgreSQL architecture.
+            <p>
+              Before DTU, I ran three roles in parallel: managing full-cycle app development at
+              VH Software, contributing to a competitive sailing simulator at Play eSailing, and teaching
+              OOP, AOP and Web Technologies as a student instructor at SDU, appointed for three
+              consecutive years. The teaching wrapped up in July 2026 and the eSailing work in
+              August 2026. The VH Software work continues.
             </p>
-            <div class="tl-tags">
-              <span class="tl-tag">Flutter</span>
-              <span class="tl-tag">Firebase</span>
-              <span class="tl-tag">Next.js</span>
-              <span class="tl-tag">Supabase</span>
-              <span class="tl-tag">Project Management</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Nov 2023 — Aug 2026</div>
-            <div class="tl-company">Play eSailing</div>
-            <div class="tl-location">Sønderborg, DK · Hybrid</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot"></div>
-            <div class="tl-line"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">Student Programmer</div>
-            <p class="tl-desc">
-              Contributed to a real-time competitive sailing simulator targeting Olympic-tier gameplay.
-              Focused on UI/UX, game map environments, game logic integration, and ensuring low-latency
-              multiplayer fairness using Photon Fusion networking. Bachelor's thesis project.
+            <p>
+              I'm comfortable across the stack: Flutter on the client, Firebase on the backend, Unity for
+              simulation, Next.js and Supabase when the job calls for it, and now enterprise frontend
+              with TypeScript and Angular in a banking context. I like problems that sit at the
+              intersection of engineering precision and product thinking.
             </p>
-            <div class="tl-tags">
-              <span class="tl-tag">Unity</span>
-              <span class="tl-tag">C#</span>
-              <span class="tl-tag">Photon Fusion</span>
-              <span class="tl-tag">Game Dev</span>
+          </div>
+
+          <div class="about-side reveal">
+            <h3 class="sub-title">Education</h3>
+            <ul class="edu-list">
+              <li class="edu-card is-current">
+                <span class="edu-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cap"/></svg></span>
+                <div class="edu-text">
+                  <span class="badge badge-current"><span class="badge-dot" aria-hidden="true"></span>In progress</span>
+                  <h4 class="edu-title">MSc Computer Science and Engineering</h4>
+                  <p class="edu-meta">DTU · Copenhagen</p>
+                  <p class="edu-dates"><time datetime="2026-09">Sep 2026</time> – <time datetime="2028-06">Jun 2028</time></p>
+                </div>
+              </li>
+              <li class="edu-card">
+                <span class="edu-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-monitor"/></svg></span>
+                <div class="edu-text">
+                  <h4 class="edu-title">BSc Software Engineering</h4>
+                  <p class="edu-meta">SDU · Sønderborg</p>
+                  <p class="edu-dates"><time datetime="2023">2023</time> – <time datetime="2026">2026</time></p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="langs">
+              <h3 class="sub-title">Languages</h3>
+              <dl class="lang-list">
+                <div><dt>English</dt><dd>Professional</dd></div>
+                <div><dt>Slovak</dt><dd>Native</dd></div>
+                <div><dt>Czech</dt><dd>Professional</dd></div>
+                <div><dt>German</dt><dd>Intermediate</dd></div>
+                <div><dt>Danish</dt><dd>Elementary</dd></div>
+              </dl>
             </div>
           </div>
         </div>
 
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Sep 2023 — Jul 2026</div>
-            <div class="tl-company">SDU</div>
-            <div class="tl-location">Sønderborg, DK · Hybrid</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot"></div>
-            <div class="tl-line"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">Student Instructor &amp; Academic Mentor</div>
-            <!-- TODO(Timothy): "Advanced-Oriented Programming" is kept exactly as before. Check the official course name. -->
-            <p class="tl-desc">
-              Appointed for three consecutive years to lead teaching for core Software Engineering modules.
-              Taught OOP (semesters 1 &amp; 3), Advanced-Oriented Programming (2 &amp; 4) and Web Technologies (5),
-              and supervised semester project teams (5 &amp; 6). Conducted code reviews, set assignments,
-              and mentored students through full-stack project delivery.
-            </p>
-            <div class="tl-tags">
-              <span class="tl-tag">OOP</span>
-              <span class="tl-tag">AOP</span>
-              <span class="tl-tag">Web Technologies</span>
-              <span class="tl-tag">Laravel</span>
-              <span class="tl-tag">Mentoring</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Aug 2024 — Jan 2025</div>
-            <div class="tl-company">SDU</div>
-            <div class="tl-location">Sønderborg, DK</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot"></div>
-            <div class="tl-line"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">Study Start Mentor</div>
-            <p class="tl-desc">
-              Supported new students in their transition to university life: guiding them through the
-              first stages of studying, campus resources, and organizing social gatherings, workshops
-              and orientation activities.
-            </p>
-            <div class="tl-tags">
-              <span class="tl-tag">Mentoring</span>
-              <span class="tl-tag">Event Planning</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal">
-          <div class="tl-left">
-            <div class="tl-date">Sep 2021 — Jun 2022</div>
-            <div class="tl-company">365.bank</div>
-            <div class="tl-location">Bratislava, SK · On-site</div>
-          </div>
-          <div class="tl-connector">
-            <div class="tl-dot"></div>
-          </div>
-          <div class="tl-right">
-            <div class="tl-role">IT &amp; Innovation, Service Desk Intern</div>
-            <p class="tl-desc">
-              Technical support internship resolving software and hardware issues for bank employees.
-              Set up new technical equipment, implemented security measures, and communicated solutions
-              clearly to non-technical staff across multiple branches.
-            </p>
-            <div class="tl-tags">
-              <span class="tl-tag">Technical Support</span>
-              <span class="tl-tag">Cybersecurity</span>
-              <span class="tl-tag">IT Infrastructure</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects" class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Projects</span>
-        <h2 class="section-title">Selected work.</h2>
-      </div>
-
-      <div class="projects-grid">
-
-        <!-- Featured: FitForm -->
-        <div class="project-card featured reveal">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Lead · Project Manager</span>
-              <h3 class="project-title">FitForm</h3>
-              <p class="project-sub">Health &amp; fitness rewards platform for iOS and Android</p>
-            </div>
-          </div>
-          <!-- TODO(Timothy): update the launch status below once FitForm ships, and add App Store / Play Store links if public. -->
-          <p class="project-desc">
-            Token-based reward system for workout completion, integrated with Apple HealthKit and
-            Google Health Connect. Architected anti-cheat logic in Firebase Cloud Functions,
-            workout scheduling, push notifications, referral system, and Stripe payments.
-            On track for dual-platform launch.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Flutter/Dart</span>
-              <span class="ptag">Firebase</span>
-              <span class="ptag">HealthKit</span>
-              <span class="ptag">Health Connect</span>
-              <span class="ptag">Stripe</span>
-            </div>
-            <span class="project-outcome">↗ iOS & Android · VH Software client</span>
-          </div>
-        </div>
-
-        <!-- Featured: eSailing -->
-        <div class="project-card featured reveal delay-1">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Student Programmer · Thesis</span>
-              <h3 class="project-title">eSailing Simulator</h3>
-              <p class="project-sub">Real-time multiplayer competitive sailing game</p>
-            </div>
-          </div>
-          <p class="project-desc">
-            Olympic-tier sailing simulator built with Unity and Photon Fusion. Real-time wind physics
-            simulation using PhysX, centre-of-mass buoyancy, and uniform wind field modelling.
-            Multiplayer networking optimized for &lt;100ms response time. Bachelor's thesis at SDU
-            in collaboration with Play eSailing.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Unity</span>
-              <span class="ptag">C#</span>
-              <span class="ptag">Photon Fusion</span>
-              <span class="ptag">PhysX</span>
-            </div>
-            <span class="project-outcome">↗ Bachelor's thesis · Play eSailing</span>
-          </div>
-        </div>
-
-        <!-- Inzeratik.sk -->
-        <!-- TODO(Timothy): add real Inzeratik metrics/features (launch date, listings, users, notable features).
-             Only add numbers you can back up.
-             NOTE: on 2026-10-01, https://inzeratik.sk redirected to www.inzeratik.sk, which served a WordPress
-             "coming soon" page ("Už čoskoro"), not the Next.js app. Point the domain at production before relying on this link. -->
-        <div class="project-card reveal">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Founder · Full-Stack</span>
-              <h3 class="project-title">Inzeratik.sk</h3>
-              <p class="project-sub">Slovak classifieds platform</p>
-            </div>
-            <a href="https://inzeratik.sk" target="_blank" rel="noopener" class="project-link-icon" aria-label="Visit inzeratik.sk (opens in a new tab)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
+        <!-- CERTIFICATIONS: cards are rendered from the CERTIFICATIONS array in scripthelper.js -->
+        <div class="certs reveal">
+          <div class="certs-head">
+            <h3 class="sub-title">Certifications</h3>
+            <a href="https://www.credly.com/users/timothy-canev" target="_blank" rel="noopener" class="text-link">
+              View all on Credly<span class="sr-only"> (opens in a new tab)</span>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
             </a>
           </div>
-          <p class="project-desc">
-            A Slovak classifieds platform that I founded, built and run end to end,
-            using Next.js and Supabase.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Next.js</span>
-              <span class="ptag">Supabase</span>
-            </div>
-            <span class="project-outcome">↗ inzeratik.sk · Own product</span>
-          </div>
-        </div>
-
-        <!-- C2C Marketplace -->
-        <div class="project-card reveal">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Lead · Project Manager</span>
-              <h3 class="project-title">C2C Marketplace</h3>
-            </div>
-          </div>
-          <p class="project-desc">
-            High-performance consumer marketplace with ZIP-radius geo filtering, automated media
-            compression, Stripe payments, Google AdSense, and PostgreSQL anti-cheat schema.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Next.js</span>
-              <span class="ptag">Supabase</span>
-              <span class="ptag">PostgreSQL</span>
-            </div>
-            <span class="project-outcome">↗ VH Software · Client project</span>
-          </div>
-        </div>
-
-        <!-- Waterless -->
-        <div class="project-card reveal delay-1">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Full-Stack · Sole Dev</span>
-              <h3 class="project-title">Waterless Dashboard</h3>
-            </div>
-          </div>
-          <p class="project-desc">
-            Full-stack IoT dashboard for urinal usage analytics. Microcontroller integration, real-time
-            data display, email notifications, and user authentication with role-based access.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">React Vite</span>
-              <span class="ptag">Firebase</span>
-              <span class="ptag">IoT</span>
-            </div>
-            <span class="project-outcome">↗ 5th semester · Client project</span>
-          </div>
-        </div>
-
-        <!-- Book Recommender -->
-        <div class="project-card reveal delay-2">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Full-Stack Dev</span>
-              <h3 class="project-title">AI Book Recommender</h3>
-            </div>
-          </div>
-          <p class="project-desc">
-            Book recommendation engine using ML to suggest titles based on a user's favourited books.
-            Django backend with a custom-trained recommendation model and user authentication.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Django</span>
-              <span class="ptag">Python</span>
-              <span class="ptag">ML</span>
-            </div>
-            <span class="project-outcome">↗ 4th semester</span>
-          </div>
-        </div>
-
-        <!-- SDU Teaching -->
-        <div class="project-card reveal delay-3">
-          <div class="project-header">
-            <div>
-              <span class="role-badge">Instructor · 3 Years</span>
-              <h3 class="project-title">SDU Curriculum</h3>
-            </div>
-          </div>
-          <p class="project-desc">
-            Three-year appointment teaching OOP, AOP, and Web Technologies at SDU.
-            Supervised 200+ students annually through semester projects, code reviews,
-            and hands-on programming workshops.
-          </p>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="ptag">Java</span>
-              <span class="ptag">Laravel</span>
-              <span class="ptag">Teaching</span>
-            </div>
-            <span class="project-outcome">↗ SDU · 2023–2026 · 200+ students/year</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills" class="section section-alt">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Skills</span>
-        <h2 class="section-title">Tech stack.</h2>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-group reveal">
-          <div class="sg-label">Mobile & Cross-Platform</div>
-          <div class="sg-tags">
-            <span class="stag primary">Flutter</span>
-            <span class="stag">Android Studio</span>
-            <span class="stag primary">HealthKit</span>
-            <span class="stag primary">Health Connect</span>
-            <span class="stag">iOS / Android</span>
-          </div>
-        </div>
-        <div class="skill-group reveal delay-1">
-          <div class="sg-label">Backend & Cloud</div>
-          <div class="sg-tags">
-            <span class="stag primary">Firebase</span>
-            <span class="stag primary">Supabase</span>
-            <span class="stag">PostgreSQL</span>
-            <span class="stag">Cloud Functions</span>
-            <span class="stag">NoSQL</span>
-            <span class="stag">REST APIs</span>
-          </div>
-        </div>
-        <div class="skill-group reveal delay-2">
-          <div class="sg-label">Frontend & Web</div>
-          <div class="sg-tags">
-            <span class="stag primary">Angular</span>
-            <span class="stag primary">TypeScript</span>
-            <span class="stag primary">Next.js</span>
-            <span class="stag">React</span>
-            <span class="stag">HTML · CSS</span>
-            <span class="stag">Laravel</span>
-            <span class="stag">Node.js</span>
-          </div>
-        </div>
-        <div class="skill-group reveal delay-3">
-          <div class="sg-label">Game & Simulation</div>
-          <div class="sg-tags">
-            <span class="stag primary">Unity</span>
-            <span class="stag primary">Photon Fusion</span>
-            <span class="stag">PhysX</span>
-            <span class="stag">Game Design</span>
-            <span class="stag">WebGL</span>
-          </div>
-        </div>
-        <div class="skill-group reveal">
-          <div class="sg-label">Languages</div>
-          <div class="sg-tags">
-            <span class="stag primary">C#</span>
-            <span class="stag primary">Dart</span>
-            <span class="stag">Python</span>
-            <span class="stag">C / C++</span>
-            <span class="stag">JavaScript</span>
-            <span class="stag">PHP</span>
-          </div>
-        </div>
-        <div class="skill-group reveal delay-1">
-          <div class="sg-label">Tools & Workflow</div>
-          <div class="sg-tags">
-            <span class="stag">Git / GitHub</span>
-            <span class="stag">Jira</span>
-            <span class="stag">Agile / Scrum</span>
-            <span class="stag">Docker</span>
-            <span class="stag">Figma</span>
-            <span class="stag">Vercel</span>
-          </div>
+          <div class="cert-grid" id="certList"></div>
+          <noscript>
+            <p class="cert-noscript">See my certifications on <a href="https://www.credly.com/users/timothy-canev">Credly</a>.</p>
+          </noscript>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="section-tag">Contact</span>
-        <h2 class="section-title">Let's talk.</h2>
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section section-alt" aria-labelledby="experience-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker"><span class="kicker-num">02</span>Experience</p>
+          <h2 class="section-title" id="experience-title">Where I've worked.</h2>
+        </header>
+
+        <ol class="timeline">
+
+          <li class="tl-item is-current reveal">
+            <div class="tl-when">
+              <p class="tl-date"><time datetime="2026-09">Sep 2026</time> – Present</p>
+              <span class="badge badge-current"><span class="badge-dot" aria-hidden="true"></span>Current</span>
+            </div>
+            <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span></div>
+            <div class="tl-body">
+              <h3 class="tl-role">Student Frontend Developer</h3>
+              <p class="tl-org"><strong>Nordea</strong> · Copenhagen, DK · Part-time</p>
+              <p class="tl-desc">
+                Frontend development within Team Phoenix, part of the Savings Insights ART in Nordea's
+                Savings &amp; Wealth unit. Working on digital wealth products alongside my MSc at DTU.
+              </p>
+              <ul class="tags">
+                <li class="tag">TypeScript</li>
+                <li class="tag">Angular</li>
+                <li class="tag">Frontend</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tl-item is-current reveal">
+            <div class="tl-when">
+              <p class="tl-date"><time datetime="2025-12">Dec 2025</time> – Present</p>
+              <span class="badge badge-current"><span class="badge-dot" aria-hidden="true"></span>Current</span>
+            </div>
+            <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span></div>
+            <div class="tl-body">
+              <h3 class="tl-role">Software Project Manager</h3>
+              <p class="tl-org"><strong>VH Software</strong> · Bratislava, SK · Hybrid</p>
+              <p class="tl-desc">
+                Managing end-to-end development for two simultaneous client projects. Leading a cross-functional
+                Flutter/Dart team building FitForm — a health rewards app with HealthKit/Health Connect integration
+                and Firebase anti-cheat Cloud Functions. Concurrently leading a Next.js/Supabase C2C marketplace
+                with geo-location filtering, media compression, Stripe, and PostgreSQL architecture.
+              </p>
+              <ul class="tags">
+                <li class="tag">Flutter</li>
+                <li class="tag">Firebase</li>
+                <li class="tag">Next.js</li>
+                <li class="tag">Supabase</li>
+                <li class="tag">Project Management</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tl-item reveal">
+            <div class="tl-when">
+              <p class="tl-date"><time datetime="2023-11">Nov 2023</time> – <time datetime="2026-08">Aug 2026</time></p>
+            </div>
+            <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span></div>
+            <div class="tl-body">
+              <h3 class="tl-role">Student Programmer</h3>
+              <p class="tl-org"><strong>Play eSailing</strong> · Sønderborg, DK · Hybrid</p>
+              <p class="tl-desc">
+                Contributed to a real-time competitive sailing simulator targeting Olympic-tier gameplay.
+                Focused on UI/UX, game map environments, game logic integration, and ensuring low-latency
+                multiplayer fairness using Photon Fusion networking. Bachelor's thesis project.
+              </p>
+              <ul class="tags">
+                <li class="tag">Unity</li>
+                <li class="tag">C#</li>
+                <li class="tag">Photon Fusion</li>
+                <li class="tag">Game Dev</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tl-item tl-group reveal">
+            <div class="tl-when">
+              <p class="tl-date"><time datetime="2023-09">Sep 2023</time> – <time datetime="2026-07">Jul 2026</time></p>
+              <span class="tl-note">2 roles</span>
+            </div>
+            <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span></div>
+            <div class="tl-body">
+              <h3 class="tl-role">University of Southern Denmark (SDU)</h3>
+              <p class="tl-org">Sønderborg, DK</p>
+              <div class="tl-roles">
+                <div class="tl-role-block">
+                  <h4 class="tl-subrole">Student Instructor &amp; Academic Mentor</h4>
+                  <p class="tl-sub"><time datetime="2023-09">Sep 2023</time> – <time datetime="2026-07">Jul 2026</time> · Hybrid</p>
+                  <!-- TODO(Timothy): "Advanced-Oriented Programming" is kept exactly as before. Check the official course name. -->
+                  <p class="tl-desc">
+                    Appointed for three consecutive years to lead teaching for core Software Engineering modules.
+                    Taught OOP (semesters 1 &amp; 3), Advanced-Oriented Programming (2 &amp; 4) and Web Technologies (5),
+                    and supervised semester project teams (5 &amp; 6). Conducted code reviews, set assignments,
+                    and mentored students through full-stack project delivery.
+                  </p>
+                  <ul class="tags">
+                    <li class="tag">OOP</li>
+                    <li class="tag">AOP</li>
+                    <li class="tag">Web Technologies</li>
+                    <li class="tag">Laravel</li>
+                    <li class="tag">Mentoring</li>
+                  </ul>
+                </div>
+                <div class="tl-role-block">
+                  <h4 class="tl-subrole">Study Start Mentor</h4>
+                  <p class="tl-sub"><time datetime="2024-08">Aug 2024</time> – <time datetime="2025-01">Jan 2025</time></p>
+                  <p class="tl-desc">
+                    Supported new students in their transition to university life: guiding them through the
+                    first stages of studying, campus resources, and organizing social gatherings, workshops
+                    and orientation activities.
+                  </p>
+                  <ul class="tags">
+                    <li class="tag">Mentoring</li>
+                    <li class="tag">Event Planning</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="tl-item reveal">
+            <div class="tl-when">
+              <p class="tl-date"><time datetime="2021-09">Sep 2021</time> – <time datetime="2022-06">Jun 2022</time></p>
+            </div>
+            <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span></div>
+            <div class="tl-body">
+              <h3 class="tl-role">IT &amp; Innovation, Service Desk Intern</h3>
+              <p class="tl-org"><strong>365.bank</strong> · Bratislava, SK · On-site</p>
+              <p class="tl-desc">
+                Technical support internship resolving software and hardware issues for bank employees.
+                Set up new technical equipment, implemented security measures, and communicated solutions
+                clearly to non-technical staff across multiple branches.
+              </p>
+              <ul class="tags">
+                <li class="tag">Technical Support</li>
+                <li class="tag">Cybersecurity</li>
+                <li class="tag">IT Infrastructure</li>
+              </ul>
+            </div>
+          </li>
+
+        </ol>
       </div>
-      <div class="contact-layout">
-        <div class="contact-left reveal">
-          <p class="contact-intro">
-            Based in Copenhagen. Open to freelance projects, collaborations and interesting conversations.
-          </p>
-          <div class="contact-links">
-            <a href="mailto:canev.timothy@gmail.com" class="contact-row">
-              <div class="cr-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </section>
+
+    <!-- PROJECTS -->
+    <!-- TODO(Timothy): add public repo or demo links to project cards where they exist
+         (the old cards linked to your GitHub profile, not to the projects themselves). -->
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker"><span class="kicker-num">03</span>Projects</p>
+          <h2 class="section-title" id="projects-title">Selected work.</h2>
+        </header>
+
+        <div class="projects-grid">
+
+          <!-- Featured: FitForm -->
+          <article class="project-card project-featured reveal" data-category="mobile">
+            <div class="pf-main">
+              <div class="pc-top pc-top-start">
+                <p class="pc-cat">Mobile</p>
+                <span class="badge">Featured</span>
               </div>
-              <div class="cr-content">
-                <span class="cr-label">Email</span>
-                <span class="cr-value">canev.timothy@gmail.com</span>
-              </div>
-              <svg class="cr-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-            </a>
-            <a href="tel:+4552220691" class="contact-row">
-              <div class="cr-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </div>
-              <div class="cr-content">
-                <span class="cr-label">Phone</span>
-                <span class="cr-value">+45 52 22 06 91</span>
-              </div>
-              <svg class="cr-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener" class="contact-row">
-              <div class="cr-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-              </div>
-              <div class="cr-content">
-                <span class="cr-label">LinkedIn</span>
-                <span class="cr-value">timothy-canev-01112729a</span>
-              </div>
-              <svg class="cr-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-            </a>
-            <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener" class="contact-row">
-              <div class="cr-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              </div>
-              <div class="cr-content">
-                <span class="cr-label">GitHub</span>
-                <span class="cr-value">TimothyCanev</span>
-              </div>
-              <svg class="cr-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-            </a>
-            <a href="https://www.credly.com/users/timothy-canev" target="_blank" rel="noopener" class="contact-row">
-              <div class="cr-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><polyline points="8.21,13.89 7,23 12,20 17,23 15.79,13.88"/></svg>
-              </div>
-              <div class="cr-content">
-                <span class="cr-label">Credly</span>
-                <span class="cr-value">timothy-canev</span>
-              </div>
-              <svg class="cr-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>
-            </a>
-          </div>
-        </div>
-        <div class="contact-right reveal delay-1">
-          <div class="cv-download-card">
-            <div class="cdc-top">
-              <div class="cdc-icon">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
-              </div>
+              <h3 class="pc-title">FitForm</h3>
+              <p class="pc-sub">Health &amp; fitness rewards platform for iOS and Android</p>
+              <!-- TODO(Timothy): update the launch status below once FitForm ships, and add App Store / Play Store links if public. -->
+              <p class="pc-desc">
+                Token-based reward system for workout completion, integrated with Apple HealthKit and
+                Google Health Connect. Architected anti-cheat logic in Firebase Cloud Functions,
+                workout scheduling, push notifications, referral system, and Stripe payments.
+                On track for dual-platform launch.
+              </p>
+            </div>
+            <dl class="pf-specs">
+              <div><dt>Role</dt><dd>Lead · Project Manager</dd></div>
+              <div><dt>Platforms</dt><dd>iOS &amp; Android</dd></div>
+              <div><dt>Client</dt><dd>VH Software</dd></div>
               <div>
-                <div class="cdc-title">Curriculum Vitae</div>
-                <div class="cdc-sub">Timothy Canev · PDF</div>
+                <dt>Stack</dt>
+                <dd>
+                  <ul class="tags">
+                    <li class="tag">Flutter/Dart</li>
+                    <li class="tag">Firebase</li>
+                    <li class="tag">HealthKit</li>
+                    <li class="tag">Health Connect</li>
+                    <li class="tag">Stripe</li>
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </article>
+
+          <!-- Inzeratik.sk -->
+          <!-- TODO(Timothy): add real Inzeratik metrics/features (launch date, listings, users, notable features).
+               Only add numbers you can back up.
+               NOTE: on 2026-10-01, https://inzeratik.sk redirected to www.inzeratik.sk, which served a WordPress
+               "coming soon" page ("Už čoskoro"), not the Next.js app. Point the domain at production before relying on this link. -->
+          <article class="project-card reveal" data-category="web">
+            <div class="pc-top">
+              <p class="pc-cat">Web</p>
+              <a href="https://inzeratik.sk" target="_blank" rel="noopener" class="pc-link" aria-label="Visit inzeratik.sk (opens in a new tab)">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+              </a>
+            </div>
+            <h3 class="pc-title">Inzeratik.sk</h3>
+            <p class="pc-role">Founder · Full-Stack</p>
+            <p class="pc-desc">
+              A Slovak classifieds platform that I founded, built and run end to end,
+              using Next.js and Supabase.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">Next.js</li>
+                <li class="tag">Supabase</li>
+              </ul>
+              <p class="pc-context">Own product · inzeratik.sk</p>
+            </div>
+          </article>
+
+          <!-- eSailing -->
+          <article class="project-card reveal" data-category="game">
+            <div class="pc-top">
+              <p class="pc-cat">Game</p>
+            </div>
+            <h3 class="pc-title">eSailing Simulator</h3>
+            <p class="pc-role">Student Programmer · Thesis</p>
+            <p class="pc-desc">
+              Olympic-tier sailing simulator built with Unity and Photon Fusion. Real-time wind physics
+              simulation using PhysX, centre-of-mass buoyancy, and uniform wind field modelling.
+              Multiplayer networking optimized for &lt;100ms response time. Bachelor's thesis at SDU
+              in collaboration with Play eSailing.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">Unity</li>
+                <li class="tag">C#</li>
+                <li class="tag">Photon Fusion</li>
+                <li class="tag">PhysX</li>
+              </ul>
+              <p class="pc-context">Bachelor's thesis · Play eSailing</p>
+            </div>
+          </article>
+
+          <!-- C2C Marketplace -->
+          <article class="project-card reveal" data-category="web">
+            <div class="pc-top">
+              <p class="pc-cat">Web</p>
+            </div>
+            <h3 class="pc-title">C2C Marketplace</h3>
+            <p class="pc-role">Lead · Project Manager</p>
+            <p class="pc-desc">
+              High-performance consumer marketplace with ZIP-radius geo filtering, automated media
+              compression, Stripe payments, Google AdSense, and PostgreSQL anti-cheat schema.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">Next.js</li>
+                <li class="tag">Supabase</li>
+                <li class="tag">PostgreSQL</li>
+              </ul>
+              <p class="pc-context">VH Software · Client project</p>
+            </div>
+          </article>
+
+          <!-- Waterless -->
+          <article class="project-card reveal" data-category="web">
+            <div class="pc-top">
+              <p class="pc-cat">Web</p>
+            </div>
+            <h3 class="pc-title">Waterless Dashboard</h3>
+            <p class="pc-role">Full-Stack · Sole Dev</p>
+            <p class="pc-desc">
+              Full-stack IoT dashboard for urinal usage analytics. Microcontroller integration, real-time
+              data display, email notifications, and user authentication with role-based access.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">React + Vite</li>
+                <li class="tag">Firebase</li>
+                <li class="tag">IoT</li>
+              </ul>
+              <p class="pc-context">5th semester · Client project</p>
+            </div>
+          </article>
+
+          <!-- Book Recommender -->
+          <article class="project-card reveal" data-category="web">
+            <div class="pc-top">
+              <p class="pc-cat">Web</p>
+            </div>
+            <h3 class="pc-title">AI Book Recommender</h3>
+            <p class="pc-role">Full-Stack Dev</p>
+            <p class="pc-desc">
+              Book recommendation engine using ML to suggest titles based on a user's favourited books.
+              Django backend with a custom-trained recommendation model and user authentication.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">Django</li>
+                <li class="tag">Python</li>
+                <li class="tag">ML</li>
+              </ul>
+              <p class="pc-context">4th semester</p>
+            </div>
+          </article>
+
+          <!-- SDU Teaching -->
+          <article class="project-card reveal" data-category="teaching">
+            <div class="pc-top">
+              <p class="pc-cat">Teaching</p>
+            </div>
+            <h3 class="pc-title">SDU Curriculum</h3>
+            <p class="pc-role">Instructor · 3 Years</p>
+            <p class="pc-desc">
+              Three-year appointment teaching OOP, AOP, and Web Technologies at SDU.
+              Supervised 200+ students annually through semester projects, code reviews,
+              and hands-on programming workshops.
+            </p>
+            <div class="pc-foot">
+              <ul class="tags">
+                <li class="tag">Java</li>
+                <li class="tag">Laravel</li>
+                <li class="tag">Teaching</li>
+              </ul>
+              <p class="pc-context">SDU Sønderborg · 2023–2026</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section section-alt" aria-labelledby="skills-title">
+      <div class="container">
+        <header class="section-head section-head-row reveal">
+          <div>
+            <p class="kicker"><span class="kicker-num">04</span>Skills</p>
+            <h2 class="section-title" id="skills-title">Tech stack.</h2>
+          </div>
+          <p class="legend"><span class="legend-swatch" aria-hidden="true"></span>Core stack</p>
+        </header>
+
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Mobile &amp; Cross-Platform</h3>
+            <ul class="chips">
+              <li class="chip chip-core">Flutter<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">HealthKit<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">Health Connect<span class="sr-only"> (core)</span></li>
+              <li class="chip">Android Studio</li>
+              <li class="chip">iOS / Android</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Backend &amp; Cloud</h3>
+            <ul class="chips">
+              <li class="chip chip-core">Firebase<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">Supabase<span class="sr-only"> (core)</span></li>
+              <li class="chip">PostgreSQL</li>
+              <li class="chip">Cloud Functions</li>
+              <li class="chip">NoSQL</li>
+              <li class="chip">REST APIs</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Frontend &amp; Web</h3>
+            <ul class="chips">
+              <li class="chip chip-core">Angular<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">TypeScript<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">Next.js<span class="sr-only"> (core)</span></li>
+              <li class="chip">React</li>
+              <li class="chip">HTML · CSS</li>
+              <li class="chip">Laravel</li>
+              <li class="chip">Node.js</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Game &amp; Simulation</h3>
+            <ul class="chips">
+              <li class="chip chip-core">Unity<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">Photon Fusion<span class="sr-only"> (core)</span></li>
+              <li class="chip">PhysX</li>
+              <li class="chip">Game Design</li>
+              <li class="chip">WebGL</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Languages</h3>
+            <ul class="chips">
+              <li class="chip chip-core">C#<span class="sr-only"> (core)</span></li>
+              <li class="chip chip-core">Dart<span class="sr-only"> (core)</span></li>
+              <li class="chip">Python</li>
+              <li class="chip">C / C++</li>
+              <li class="chip">JavaScript</li>
+              <li class="chip">PHP</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="sg-title">Tools &amp; Workflow</h3>
+            <ul class="chips">
+              <li class="chip">Git / GitHub</li>
+              <li class="chip">Jira</li>
+              <li class="chip">Agile / Scrum</li>
+              <li class="chip">Docker</li>
+              <li class="chip">Figma</li>
+              <li class="chip">Vercel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker"><span class="kicker-num">05</span>Contact</p>
+          <h2 class="section-title" id="contact-title">Let's talk.</h2>
+        </header>
+
+        <div class="contact-grid">
+          <div class="contact-main reveal">
+            <p class="contact-intro">
+              Based in Copenhagen. Open to freelance projects, collaborations and interesting conversations.
+            </p>
+            <ul class="contact-list">
+              <li>
+                <a href="mailto:canev.timothy@gmail.com" class="contact-row">
+                  <span class="cr-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
+                  <span class="cr-text"><span class="cr-label">Email</span><span class="cr-value">canev.timothy@gmail.com</span></span>
+                  <svg class="icon cr-arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="tel:+4552220691" class="contact-row">
+                  <span class="cr-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span>
+                  <span class="cr-text"><span class="cr-label">Phone</span><span class="cr-value">+45&nbsp;52&nbsp;22&nbsp;06&nbsp;91</span></span>
+                  <svg class="icon cr-arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener" class="contact-row">
+                  <span class="cr-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></span>
+                  <span class="cr-text"><span class="cr-label">LinkedIn</span><span class="cr-value">timothy-canev-01112729a</span></span>
+                  <span class="sr-only">(opens in a new tab)</span>
+                  <svg class="icon cr-arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener" class="contact-row">
+                  <span class="cr-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-github"/></svg></span>
+                  <span class="cr-text"><span class="cr-label">GitHub</span><span class="cr-value">TimothyCanev</span></span>
+                  <span class="sr-only">(opens in a new tab)</span>
+                  <svg class="icon cr-arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.credly.com/users/timothy-canev" target="_blank" rel="noopener" class="contact-row">
+                  <span class="cr-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-award"/></svg></span>
+                  <span class="cr-text"><span class="cr-label">Credly</span><span class="cr-value">timothy-canev</span></span>
+                  <span class="sr-only">(opens in a new tab)</span>
+                  <svg class="icon cr-arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <aside class="cv-card reveal" aria-labelledby="cv-title">
+            <div class="cv-head">
+              <span class="cv-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file"/></svg></span>
+              <div>
+                <h3 class="cv-title" id="cv-title">Curriculum Vitae</h3>
+                <p class="cv-sub">Timothy Canev · PDF</p>
               </div>
             </div>
-            <div class="cdc-info">
-              <span>Software Engineer · BSc SDU 2026 · MSc DTU (in progress)</span>
-            </div>
+            <p class="cv-info"><span>Software Engineer</span> · <span>BSc SDU 2026</span> · <span>MSc DTU (in progress)</span></p>
             <!-- TODO(Timothy): CV.pdf (last updated Feb 2026) predates Nordea and DTU. Replace it with an updated CV. -->
-            <a href="CV.pdf" download class="cdc-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <a href="CV.pdf" download class="btn btn-primary btn-block">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"/></svg>
               Download CV
             </a>
-          </div>
+          </aside>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-logo">TC<span class="logo-dot">.</span></span>
-        <span class="footer-copy">© 2026 Timothy Canev · Built with intent, not a template.</span>
-        <div class="footer-links">
-          <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener" aria-label="GitHub">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="#home" class="logo logo-sm" aria-label="Back to top">TC<span class="logo-dot">.</span></a>
+      <p class="footer-copy">© 2026 Timothy Canev · Built with intent, not a template.</p>
+      <ul class="footer-links">
+        <li>
+          <a href="https://github.com/TimothyCanev" target="_blank" rel="noopener" aria-label="GitHub (opens in a new tab)">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>
           </a>
-          <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/timothy-canev-01112729a" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg>
           </a>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </footer>
 

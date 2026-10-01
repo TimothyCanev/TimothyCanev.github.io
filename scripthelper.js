@@ -1,10 +1,13 @@
 /* =============================================
-   TIMOTHY CANEV PORTFOLIO
-   script.js
+   TIMOTHY CANEV — PORTFOLIO
+   scripthelper.js
    ============================================= */
 
 (function () {
   'use strict';
+
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- CERTIFICATIONS (edit this list to add more) ---
   // Fields: title, issuer, date (optional), detail (optional),
@@ -44,11 +47,11 @@
     var list = document.getElementById('certList');
     if (!list) return;
     CERTIFICATIONS.forEach(function (cert) {
-      var card = el('article', 'cert-card');
-      var meta = el('div', 'cert-meta');
-      meta.appendChild(el('span', 'cert-issuer', cert.issuer));
-      if (cert.date) meta.appendChild(el('span', 'cert-date', cert.date));
-      card.appendChild(meta);
+      var hasCourses = cert.courses && cert.courses.length;
+      var card = el('article', 'cert-card' + (hasCourses ? ' is-track' : ''));
+
+      // The no-break space keeps the "·" separator from starting a wrapped line.
+      card.appendChild(el('p', 'cert-meta', cert.issuer + (cert.date ? ' · ' + cert.date : '')));
 
       var title = el('h4', 'cert-title');
       if (cert.url) {
@@ -63,7 +66,7 @@
       card.appendChild(title);
 
       if (cert.detail) card.appendChild(el('p', 'cert-detail', cert.detail));
-      if (cert.courses && cert.courses.length) {
+      if (hasCourses) {
         var courses = el('ol', 'cert-courses');
         cert.courses.forEach(function (course) {
           courses.appendChild(el('li', null, course));
@@ -76,146 +79,163 @@
 
   renderCertifications();
 
-  // --- DARK MODE ---
-  const root    = document.documentElement;
-  const themeBtn = document.getElementById('themeBtn');
-  const STORAGE_KEY = 'tc-theme';
 
-  function applyTheme(theme) {
+  // --- THEME (dark by default; the choice is remembered) ---
+  var THEME_KEY = 'tc-theme';
+  var THEME_COLORS = { dark: '#0C0C0C', light: '#FAFAF9' };
+  var themeToggle = document.getElementById('themeToggle');
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  function currentTheme() {
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function syncThemeUI() {
+    var theme = currentTheme();
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+    if (themeMeta) themeMeta.setAttribute('content', THEME_COLORS[theme]);
+  }
+
+  function setTheme(theme) {
     root.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable */ }
+    syncThemeUI();
   }
 
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    applyTheme(saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    applyTheme('dark');
-  }
-
-  themeBtn.addEventListener('click', function () {
-    const current = root.getAttribute('data-theme');
-    applyTheme(current === 'dark' ? 'light' : 'dark');
-  });
-
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      applyTheme(e.matches ? 'dark' : 'light');
-    }
-  });
-
-
-  // --- HAMBURGER MENU ---
-  const hamburger  = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileLinks = mobileMenu.querySelectorAll('.mobile-link');
-
-  hamburger.addEventListener('click', function () {
-    const isOpen = mobileMenu.classList.toggle('open');
-    hamburger.setAttribute('aria-expanded', isOpen);
-    const bars = hamburger.querySelectorAll('span');
-    if (isOpen) {
-      bars[0].style.transform = 'translateY(7px) rotate(45deg)';
-      bars[1].style.opacity = '0';
-      bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
-    } else {
-      bars[0].style.transform = '';
-      bars[1].style.opacity = '';
-      bars[2].style.transform = '';
-    }
-  });
-
-  mobileLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      mobileMenu.classList.remove('open');
-      const bars = hamburger.querySelectorAll('span');
-      bars[0].style.transform = '';
-      bars[1].style.opacity = '';
-      bars[2].style.transform = '';
+  syncThemeUI();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
     });
-  });
+  }
 
 
-  // --- STICKY NAV ---
-  const nav = document.getElementById('nav');
+  // --- HEADER: border once the page scrolls ---
+  var header = document.getElementById('siteHeader');
+  var ticking = false;
+
   function onScroll() {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
-    updateActiveNav();
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-
-  // --- ACTIVE NAV LINK ---
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const sections = ['home', 'about', 'experience', 'projects', 'skills', 'contact'];
-
-  function updateActiveNav() {
-    let currentSection = 'home';
-    sections.forEach(function (id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (window.scrollY >= el.offsetTop - 120) {
-        currentSection = id;
-      }
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      updateActive();
+      ticking = false;
     });
+  }
+
+
+  // --- MOBILE MENU ---
+  var menuToggle = document.getElementById('menuToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+
+  function isMenuOpen() {
+    return mobileMenu.classList.contains('is-open');
+  }
+
+  function setMenu(open, returnFocus) {
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    mobileMenu.classList.toggle('is-open', open);
+    if (open) {
+      var first = mobileMenu.querySelector('a');
+      if (first) first.focus({ preventScroll: true });
+    } else if (returnFocus) {
+      menuToggle.focus();
+    }
+  }
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', function () {
+      setMenu(!isMenuOpen());
+    });
+    mobileMenu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) setMenu(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isMenuOpen()) setMenu(false, true);
+    });
+    document.addEventListener('click', function (e) {
+      if (isMenuOpen() && !header.contains(e.target)) setMenu(false);
+    });
+    var desktop = window.matchMedia('(min-width: 900px)');
+    var closeOnDesktop = function (e) { if (e.matches && isMenuOpen()) setMenu(false); };
+    if (desktop.addEventListener) desktop.addEventListener('change', closeOnDesktop);
+    else if (desktop.addListener) desktop.addListener(closeOnDesktop);
+  }
+
+
+  // --- ACTIVE SECTION IN NAV ---
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a, .mobile-link'));
+  var sectionIds = [];
+  navLinks.forEach(function (link) {
+    var id = link.getAttribute('href').slice(1);
+    if (sectionIds.indexOf(id) === -1) sectionIds.push(id);
+  });
+  var sections = sectionIds
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+
+  function setActive(id) {
     navLinks.forEach(function (link) {
-      link.classList.toggle(
-        'active',
-        link.getAttribute('href') === '#' + currentSection
-      );
+      var isActive = link.getAttribute('href') === '#' + id;
+      link.classList.toggle('is-active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
     });
   }
+
+  var inView = {};
+
+  function updateActive() {
+    if (!sections.length) return;
+    // At the very bottom the last section can be too short to reach the
+    // middle of the viewport, so it is marked active explicitly.
+    var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    var active = null;
+    if (atBottom) {
+      active = sections[sections.length - 1].id;
+    } else {
+      for (var i = 0; i < sections.length; i++) {
+        if (inView[sections[i].id]) { active = sections[i].id; break; }
+      }
+    }
+    setActive(active);
+  }
+
+  if ('IntersectionObserver' in window && sections.length) {
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) { inView[entry.target.id] = entry.isIntersecting; });
+      updateActive();
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function (section) { sectionObserver.observe(section); });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
 
   // --- SCROLL REVEAL ---
-  // Gate opacity:0 behind js-loaded so content is always visible if JS hasn't run
-  root.classList.add('js-loaded');
+  // Content is only hidden when the "js" class is present (set in <head>),
+  // so the page stays fully readable without JavaScript.
+  var revealEls = document.querySelectorAll('.reveal');
 
-  const revealEls = document.querySelectorAll('.reveal');
-
-  const revealObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(revealEls, function (node) { node.classList.add('is-visible'); });
+  } else {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      var batch = 0;
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        // Items that appear together cascade slightly.
+        entry.target.style.setProperty('--stagger', String(Math.min(batch++, 5)));
+        entry.target.classList.add('is-visible');
         revealObserver.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0,
-    rootMargin: '0px 0px 0px 0px'
-  });
-
-  revealEls.forEach(function (el) {
-    // Immediately make visible anything already in the viewport on load
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      el.classList.add('visible');
-    } else {
-      revealObserver.observe(el);
-    }
-  });
-
-
-  // --- SMOOTH SCROLL ---
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (!target) return;
-      e.preventDefault();
-      const offset = parseInt(getComputedStyle(root).getPropertyValue('--nav-h') || '60', 10);
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
-  });
-
-
-  // --- KEYBOARD ACCESSIBILITY ---
-  themeBtn.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      themeBtn.click();
-    }
-  });
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+    Array.prototype.forEach.call(revealEls, function (node) { revealObserver.observe(node); });
+  }
 
 })();
