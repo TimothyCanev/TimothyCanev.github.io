@@ -50,8 +50,10 @@
       var hasCourses = cert.courses && cert.courses.length;
       var card = el('article', 'cert-card' + (hasCourses ? ' is-track' : ''));
 
-      // The no-break space keeps the "·" separator from starting a wrapped line.
-      card.appendChild(el('p', 'cert-meta', cert.issuer + (cert.date ? ' · ' + cert.date : '')));
+      // No-break spaces keep the date in one piece and stop the "·"
+      // separator from starting a wrapped line.
+      var date = cert.date ? ' · ' + cert.date.replace(/ /g, ' ') : '';
+      card.appendChild(el('p', 'cert-meta', cert.issuer + date));
 
       var title = el('h4', 'cert-title');
       if (cert.url) {
