@@ -57,12 +57,13 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <script src="scripthelper.js" defer></script>
 </head>
 <body>
+  <span class="scroll-sentinel" id="scrollSentinel" aria-hidden="true"></span>
 
   <!-- ICON SPRITE -->
   <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
@@ -86,7 +87,7 @@
   <!-- HEADER / NAV -->
   <header class="site-header" id="siteHeader">
     <div class="container header-inner">
-      <a href="#home" class="logo" aria-label="Timothy Canev, back to top">TC<span class="logo-dot">.</span></a>
+      <a href="#home" class="logo">TC<span class="logo-dot">.</span><span class="sr-only"> Timothy Canev, back to top</span></a>
       <nav class="nav" aria-label="Primary">
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
@@ -791,7 +792,7 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <a href="#home" class="logo logo-sm" aria-label="Back to top">TC<span class="logo-dot">.</span></a>
+      <a href="#home" class="logo logo-sm">TC<span class="logo-dot">.</span><span class="sr-only"> Back to top</span></a>
       <p class="footer-copy">© 2026 Timothy Canev · Built with intent, not a template.</p>
       <ul class="footer-links">
         <li>
@@ -808,6 +809,5 @@
     </div>
   </footer>
 
-  <script src="scripthelper.js"></script>
 </body>
 </html>

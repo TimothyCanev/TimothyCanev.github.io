@@ -113,17 +113,14 @@
 
 
   // --- HEADER: border once the page scrolls ---
+  // Observers are used instead of scroll listeners, so nothing reads
+  // layout on the main thread while scrolling.
   var header = document.getElementById('siteHeader');
-  var ticking = false;
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 8);
-      updateActive();
-      ticking = false;
-    });
+  var sentinel = document.getElementById('scrollSentinel');
+  if ('IntersectionObserver' in window && header && sentinel) {
+    new IntersectionObserver(function (entries) {
+      header.classList.toggle('is-scrolled', !entries[0].isIntersecting);
+    }).observe(sentinel);
   }
 
 
@@ -188,14 +185,13 @@
   }
 
   var inView = {};
+  var footerInView = false;
 
   function updateActive() {
-    if (!sections.length) return;
-    // At the very bottom the last section can be too short to reach the
-    // middle of the viewport, so it is marked active explicitly.
-    var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
     var active = null;
-    if (atBottom) {
+    // At the very bottom the last section can be too short to reach the
+    // middle of the viewport, so it wins once the footer is fully visible.
+    if (footerInView) {
       active = sections[sections.length - 1].id;
     } else {
       for (var i = 0; i < sections.length; i++) {
@@ -211,10 +207,15 @@
       updateActive();
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (section) { sectionObserver.observe(section); });
-  }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+    var footer = document.querySelector('.site-footer');
+    if (footer) {
+      new IntersectionObserver(function (entries) {
+        footerInView = entries[0].intersectionRatio > 0.95;
+        updateActive();
+      }, { threshold: [0, 0.95, 1] }).observe(footer);
+    }
+  }
 
 
   // --- SCROLL REVEAL ---
