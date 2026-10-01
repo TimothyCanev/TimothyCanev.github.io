@@ -6,6 +6,76 @@
 (function () {
   'use strict';
 
+  // --- CERTIFICATIONS (edit this list to add more) ---
+  // Fields: title, issuer, date (optional), detail (optional),
+  //         courses (optional list), url (optional link to the credential).
+  var CERTIFICATIONS = [
+    {
+      title: 'CCNA (v7 Full Track)',
+      issuer: 'Cisco Networking Academy',
+      date: null, // TODO(Timothy): add the year you completed the CCNA track
+      detail: '3-course CCNA track',
+      courses: [
+        'Introduction to Networks',
+        'Switching, Routing & Wireless Essentials',
+        'Enterprise Networking, Security & Automation'
+      ]
+    },
+    {
+      title: 'Photon Fusion: Unity Multiplayer Game Development',
+      issuer: 'Udemy',
+      date: 'Apr 2024'
+    },
+    {
+      title: 'Instructor (Instruktorkursus)',
+      issuer: 'University of Southern Denmark',
+      date: 'Sep 2024'
+    }
+  ];
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function renderCertifications() {
+    var list = document.getElementById('certList');
+    if (!list) return;
+    CERTIFICATIONS.forEach(function (cert) {
+      var card = el('article', 'cert-card');
+      var meta = el('div', 'cert-meta');
+      meta.appendChild(el('span', 'cert-issuer', cert.issuer));
+      if (cert.date) meta.appendChild(el('span', 'cert-date', cert.date));
+      card.appendChild(meta);
+
+      var title = el('h4', 'cert-title');
+      if (cert.url) {
+        var link = el('a', null, cert.title);
+        link.href = cert.url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        title.appendChild(link);
+      } else {
+        title.textContent = cert.title;
+      }
+      card.appendChild(title);
+
+      if (cert.detail) card.appendChild(el('p', 'cert-detail', cert.detail));
+      if (cert.courses && cert.courses.length) {
+        var courses = el('ol', 'cert-courses');
+        cert.courses.forEach(function (course) {
+          courses.appendChild(el('li', null, course));
+        });
+        card.appendChild(courses);
+      }
+      list.appendChild(card);
+    });
+  }
+
+  renderCertifications();
+
   // --- DARK MODE ---
   const root    = document.documentElement;
   const themeBtn = document.getElementById('themeBtn');

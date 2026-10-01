@@ -425,6 +425,83 @@ ul { list-style: none; }
   font-size: 12px;
   color: var(--text-3);
 }
+.current-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+  color: var(--accent-text);
+  background: var(--accent-dim);
+}
+
+/* Now badge (hero) */
+.now-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px 6px 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text-2);
+}
+.now-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-text);
+}
+
+/* Certifications */
+.certifications { margin-top: 56px; }
+.cert-heading {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.cert-card {
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.cert-meta {
+  display: flex; justify-content: space-between; gap: 12px;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.cert-date { font-family: var(--font-mono); }
+.cert-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.cert-detail { font-size: 12px; color: var(--text-3); margin-top: 4px; }
+.cert-courses {
+  margin-top: 8px;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.cert-credly {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+.cert-noscript { font-size: 13px; color: var(--text-2); }
 
 /* --- TIMELINE --- */
 .timeline { display: flex; flex-direction: column; gap: 0; }
@@ -798,6 +875,7 @@ ul { list-style: none; }
   .hero-visual { display: none; }
 
   .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .cert-grid { grid-template-columns: 1fr; }
   .timeline-item { grid-template-columns: 1fr; gap: 8px; }
   .tl-left { text-align: left; padding-bottom: 0; }
   .tl-connector { flex-direction: row; padding: 4px 0; }
