@@ -59,8 +59,8 @@
   </script>
   <link rel="preload" href="fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261001">
-  <script src="scripthelper.js?v=20261001" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261001b">
+  <script src="scripthelper.js?v=20261001b" defer></script>
 </head>
 <body>
   <span class="scroll-sentinel" id="scrollSentinel" aria-hidden="true"></span>
@@ -170,14 +170,27 @@
         </div>
 
         <div class="hero-visual enter" style="--d: 3">
-          <figure class="code-card">
-            <figcaption class="code-bar">
+          <!-- Editor window: one tab per project. Tabs auto-rotate until a visitor picks one
+               (see "CODE WINDOW" in scripthelper.js). Snippets are illustrative excerpts. -->
+          <div class="code-card" id="codeWindow" role="group" aria-label="Code from my projects">
+            <div class="code-bar">
               <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="code-file">FitForm.dart</span>
-              <span class="code-lang" aria-hidden="true">Dart</span>
-            </figcaption>
-            <div class="code-body">
-              <pre class="code-gutter" aria-hidden="true">1
+              <div class="code-tabs" role="tablist" aria-label="Project files">
+                <button class="code-tab" type="button" role="tab" id="tab-fitform" aria-selected="true" aria-controls="panel-fitform">
+                  FitForm.dart<span class="tab-progress" aria-hidden="true"></span>
+                </button>
+                <button class="code-tab" type="button" role="tab" id="tab-inzeratik" aria-selected="false" aria-controls="panel-inzeratik" tabindex="-1">
+                  listings.ts<span class="tab-progress" aria-hidden="true"></span>
+                </button>
+                <button class="code-tab" type="button" role="tab" id="tab-esailing" aria-selected="false" aria-controls="panel-esailing" tabindex="-1">
+                  SailBoat.cs<span class="tab-progress" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+
+            <div class="code-panel" role="tabpanel" id="panel-fitform" aria-labelledby="tab-fitform">
+              <div class="code-body">
+                <pre class="code-gutter" aria-hidden="true">1
 2
 3
 4
@@ -189,7 +202,7 @@
 10
 11
 12</pre>
-              <pre class="code"><code><span class="t-kw">class</span> <span class="t-type">FitFormApp</span> <span class="t-kw">extends</span> <span class="t-type">StatelessWidget</span> {
+                <pre class="code"><code><span class="t-kw">class</span> <span class="t-type">FitFormApp</span> <span class="t-kw">extends</span> <span class="t-type">StatelessWidget</span> {
   <span class="t-kw">final</span> rewardSystem = <span class="t-type">TokenRewardSystem</span>(
     <span class="t-prop">healthConnect</span>: <span class="t-type">HealthConnectAPI</span>(),
     <span class="t-prop">antiCheat</span>: <span class="t-type">FirebaseCloudFunctions</span>(),
@@ -201,8 +214,77 @@
       .<span class="t-fn">then</span>((tokens) =&gt; <span class="t-fn">awardUser</span>(tokens));
   }
 }<span class="caret" aria-hidden="true"></span></code></pre>
+              </div>
+              <a class="code-status" href="#project-fitform">
+                <span class="code-status-name"><span class="code-status-dot" aria-hidden="true"></span><span class="code-status-text">FitForm · iOS &amp; Android · VH Software client</span></span>
+                <span class="code-status-link">View project<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></span>
+              </a>
             </div>
-          </figure>
+
+            <div class="code-panel" role="tabpanel" id="panel-inzeratik" aria-labelledby="tab-inzeratik" hidden>
+              <div class="code-body">
+                <pre class="code-gutter" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12</pre>
+                <pre class="code"><code><span class="t-kw">import</span> { supabase } <span class="t-kw">from</span> <span class="t-str">'@/lib/supabase'</span>;
+
+<span class="t-com">// Slovak classifieds · Next.js + Supabase</span>
+<span class="t-kw">export async function</span> <span class="t-fn">getLatestListings</span>() {
+  <span class="t-kw">const</span> { data } = <span class="t-kw">await</span> supabase
+    .<span class="t-fn">from</span>(<span class="t-str">'listings'</span>)
+    .<span class="t-fn">select</span>(<span class="t-str">'id, title, price, created_at'</span>)
+    .<span class="t-fn">order</span>(<span class="t-str">'created_at'</span>, {
+      <span class="t-prop">ascending</span>: <span class="t-kw">false</span>,
+    });
+  <span class="t-kw">return</span> data ?? [];
+}<span class="caret" aria-hidden="true"></span></code></pre>
+              </div>
+              <a class="code-status" href="#project-inzeratik">
+                <span class="code-status-name"><span class="code-status-dot" aria-hidden="true"></span><span class="code-status-text">Inzeratik.sk · In development</span></span>
+                <span class="code-status-link">View project<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></span>
+              </a>
+            </div>
+
+            <div class="code-panel" role="tabpanel" id="panel-esailing" aria-labelledby="tab-esailing" hidden>
+              <div class="code-body">
+                <pre class="code-gutter" aria-hidden="true">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11</pre>
+                <pre class="code"><code><span class="t-kw">public class</span> <span class="t-type">SailBoat</span> : <span class="t-type">NetworkBehaviour</span> {
+  [<span class="t-type">Networked</span>] <span class="t-kw">float</span> Heading { <span class="t-kw">get</span>; <span class="t-kw">set</span>; }
+  <span class="t-type">WindField</span> wind = <span class="t-type">WindField</span>.<span class="t-fn">Uniform</span>();
+
+  <span class="t-com">// Real-time wind physics · PhysX</span>
+  <span class="t-kw">public override void</span> <span class="t-fn">FixedUpdateNetwork</span>() {
+    <span class="t-kw">var</span> force = wind.<span class="t-fn">ForceOn</span>(sail, Heading);
+    rb.<span class="t-fn">AddForceAtPosition</span>(force,
+      rb.<span class="t-prop">worldCenterOfMass</span>);
+  }
+}<span class="caret" aria-hidden="true"></span></code></pre>
+              </div>
+              <a class="code-status" href="#project-esailing">
+                <span class="code-status-name"><span class="code-status-dot" aria-hidden="true"></span><span class="code-status-text">eSailing Simulator · BSc thesis · Play eSailing</span></span>
+                <span class="code-status-link">View project<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></span>
+              </a>
+            </div>
+          </div>
           <dl class="stats">
             <div class="stat"><dt>Years teaching</dt><dd>3+</dd></div>
             <div class="stat"><dt>Projects shipped</dt><dd>6+</dd></div>
@@ -457,7 +539,7 @@
         <div class="projects-grid">
 
           <!-- Featured: FitForm -->
-          <article class="project-card project-featured reveal" data-category="mobile">
+          <article class="project-card project-featured reveal" id="project-fitform" data-category="mobile">
             <div class="pf-main">
               <div class="pc-top pc-top-start">
                 <p class="pc-cat">Mobile</p>
@@ -496,7 +578,7 @@
           <!-- TODO(Timothy): at launch, swap the "In development" badge for a link to https://inzeratik.sk
                (see the pc-link markup used before), change "am building" to "run", and add real
                features or metrics you can back up. -->
-          <article class="project-card reveal" data-category="web">
+          <article class="project-card reveal" id="project-inzeratik" data-category="web">
             <div class="pc-top">
               <p class="pc-cat">Web</p>
               <span class="badge">In development</span>
@@ -517,7 +599,7 @@
           </article>
 
           <!-- eSailing -->
-          <article class="project-card reveal" data-category="game">
+          <article class="project-card reveal" id="project-esailing" data-category="game">
             <div class="pc-top">
               <p class="pc-cat">Game</p>
             </div>

@@ -114,6 +114,74 @@
   }
 
 
+  // --- CODE WINDOW (hero tabs) ---
+  // Tabs rotate every ROTATE_MS until the visitor picks one. The rotation is
+  // driven by the active tab's progress-line animation, so pausing that
+  // animation (hover, focus, off-screen, hidden browser tab) pauses the timer too.
+  var codeWindow = document.getElementById('codeWindow');
+  if (codeWindow) {
+    var ROTATE_MS = 7000;
+    var tabs = Array.prototype.slice.call(codeWindow.querySelectorAll('[role="tab"]'));
+    var pauseReasons = {};
+
+    var selectTab = function (tab, focus) {
+      tabs.forEach(function (t) {
+        var isOn = t === tab;
+        t.setAttribute('aria-selected', String(isOn));
+        t.tabIndex = isOn ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !isOn;
+      });
+      if (focus) tab.focus();
+    };
+
+    var stopRotation = function () { codeWindow.classList.remove('is-rotating'); };
+
+    var setPaused = function (reason, isPaused) {
+      pauseReasons[reason] = isPaused;
+      var paused = Object.keys(pauseReasons).some(function (k) { return pauseReasons[k]; });
+      codeWindow.classList.toggle('is-paused', paused);
+    };
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () {
+        stopRotation();
+        selectTab(tab);
+      });
+      tab.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (!next) return;
+        e.preventDefault();
+        stopRotation();
+        selectTab(next, true);
+      });
+      tab.querySelector('.tab-progress').addEventListener('animationend', function () {
+        if (codeWindow.classList.contains('is-rotating')) selectTab(tabs[(i + 1) % tabs.length]);
+      });
+    });
+
+    if (!reduceMotion && tabs.length > 1) {
+      codeWindow.style.setProperty('--rotate-ms', ROTATE_MS + 'ms');
+      codeWindow.classList.add('is-rotating');
+      codeWindow.addEventListener('mouseenter', function () { setPaused('hover', true); });
+      codeWindow.addEventListener('mouseleave', function () { setPaused('hover', false); });
+      codeWindow.addEventListener('focusin', function () { setPaused('focus', true); });
+      codeWindow.addEventListener('focusout', function (e) {
+        if (!codeWindow.contains(e.relatedTarget)) setPaused('focus', false);
+      });
+      document.addEventListener('visibilitychange', function () { setPaused('hidden', document.hidden); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          setPaused('offscreen', !entries[0].isIntersecting);
+        }).observe(codeWindow);
+      }
+    }
+  }
+
+
   // --- HEADER: border once the page scrolls ---
   // Observers are used instead of scroll listeners, so nothing reads
   // layout on the main thread while scrolling.
